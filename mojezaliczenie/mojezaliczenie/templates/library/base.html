@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>My library</h1>
+        <nav>
+            <a href="{% url 'book_list' %}">Books</a>
+            <a href="{% url 'orders_summary' %}">Orders</a>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My library</p>
+    </footer>
+</body>
+</html>
