@@ -1,0 +1,12 @@
+{% extends "library/base.html" %}
+
+{% block content %}
+<h2>Orders</h2>
+<ul>
+  {% for order in orders %}
+    <p>Order Number: {{ order.order_date }}</p>
+    <p>Name: {{ order.user }}</p>
+    <p>Order: {{ order.book }}</p>
+  {% endfor %}
+</ul>
+{% endblock %}

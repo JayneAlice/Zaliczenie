@@ -2,11 +2,11 @@ from django.db import models
 
 # Create your models here.
 class Users(models.Model):
-    Username = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return self.username
+        return self.name
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -34,6 +34,7 @@ class Order(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     order_date = models.DateField(auto_now_add=True)
+    id
 
     def __str__(self):
-        return f'Order {self.id} by {self.user.username}'
+        return self.id

@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Library</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <header>
-        <h1>My library</h1>
-        <nav>
-            <a href="{% url 'book_list' %}">Books</a>
-            <a href="{% url 'orders_summary' %}">Orders</a>
-        </nav>
-    </header>
-    
-    <main>
+    <div id="header">
+        <p>Library</p>
+    </div>
+    <div id="content">
         {% block content %}
         {% endblock %}
-    </main>
-
-    <footer>
-        <p>&copy; 2025 My library</p>
-    </footer>
+    </div>
+    <div id="sidebar">
+        <p>That was pleasant meeting! see you soon!</p>
+    </div>
 </body>
 </html>

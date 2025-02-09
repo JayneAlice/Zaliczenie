@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "library/base.html" %}
 
 {% block content %}
-<h2>Lista Książek</h2>
+<h2>Book shelf</h2>
 <ul>
   {% for book in books %}
-  <li><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> - {{ book.author.name }}</li>
+    <p>Title: {{ book.title }}</p>
+    <p>By: {{ book.author }}</p>
+    <p>Category: {{ book.category }}</p>
+    <p>Published Date: {{ book.published_date }}</p>
   {% endfor %}
 </ul>
 {% endblock %}

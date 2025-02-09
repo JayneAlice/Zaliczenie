@@ -1,0 +1,10 @@
+{% extends "library/base.html" %}
+
+{% block content %}
+<h2>You found someone with similar teast</h2>
+<ul>
+  {% for user in users %}
+    <p>{{ users.name }}</p>
+  {% endfor %}
+</ul>
+{% endblock %}

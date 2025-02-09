@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404,redirect
 # Create your views here.
 # kod umieszczamy w pliku views.py wybranej aplikacji
 
@@ -15,39 +14,32 @@ def welcome_view(request):
         </body></html>"""
     return HttpResponse(html)
 
-def book_list(request):
+def book_list(request, id):
     books = Book.objects.all()
-    return render(request, 'books/list.html', 
+    return render(request,
+                'library/books/list.html', 
                   {'books': books})
 
-# def book_detail(request, book_id):
-#     book = get_object_or_404(Book, id=book_id)
-#     return render(request, 'book_detail.html', 
-#                   {'book': book})
+def author_list(request):
+    authors = Author.objects.all()
+    return render(request,
+                'library/authors/list.html', 
+                  {'authors': authors})
 
-# def edit_book(request, book_id):
-#     book = get_object_or_404(Book, id=book_id)
-#     if request.method == "POST":
-#         # Logika aktualizacji książki
-#         pass
-#     return render(request, 'edit_book.html', 
-#                   {'book': book})
+def user_list(request):
+    users = Users.objects.all()
+    return render(request,
+                'library/users/list.html', 
+                  {'users': users})
 
-# def delete_book(request, book_id):
-#     book = get_object_or_404(Book, id=book_id)
-#     if request.method == "POST":
-#         book.delete()
-#         return redirect('book_list')
-#     return render(request, 'delete_book.html', 
-#                   {'book': book})
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request,
+                'library/categories/list.html', 
+                  {'categories': categories})
 
-# def orders_summary(request):
-#     # Logika do zestawienia zamówień
-#     orders = Order.objects.all()  # Można filtrować według daty
-#     return render(request, 'orders_summary.html', 
-#                   {'orders': orders})
-
-# def books_by_category(request, category_id):
-#     books = Book.objects.filter(category_id=category_id)
-#     return render(request, 'books_by_category.html', 
-#                   {'books': books})
+def order_list(request):
+    orders = Order.objects.all()
+    return render(request,
+                'library/orders/list.html', 
+                  {'orders': orders})
