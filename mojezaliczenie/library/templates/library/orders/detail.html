@@ -1,6 +1,11 @@
 {% extends "library/base.html" %}
 
+{% block title %}{{ order.name }}{% endblock %}
+
 {% block content %}
+<a href="{% url 'order_list' %}">Back to list</a>
+<br>
+
 <p>{{ order.order_number }}</p>
 <p>{{ order.user }}</p>
 <p>{{ order.book }}</p>

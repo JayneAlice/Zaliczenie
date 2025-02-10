@@ -1,0 +1,32 @@
+{% extends "library/base.html" %}  {# Ensure the path is correct #}
+
+{% block title %}Delete Order{% endblock %}
+
+{% block content %}
+    <a href="{% url 'order_list' %}">Back to List</a>
+    <br>
+
+    <h2 id="confirm-message">Are you sure you want to delete this order?</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if error_message %}
+            <div class="alert alert-danger">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        <p>Confirm the deletion by clicking the button below.</p>
+        <button type="submit" aria-describedby="confirm-message" onclick="return confirm('Are you sure you want to delete this order?');">
+            Confirm Deletion
+        </button>
+
+        {% if success_message %}
+          <div class="alert alert-success">
+            {{ success_message }}
+          </div>
+        {% endif %}
+    </form>
+{% endblock %}
+

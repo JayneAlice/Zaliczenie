@@ -1,10 +1,11 @@
 from urllib import request
-from django.shortcuts import render, get_object_or_404,redirect
+from django.shortcuts import render,redirect
 # Create your views here.
 # kod umieszczamy w pliku views.py wybranej aplikacji
 
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 import datetime
+
 from .forms import OrderForm
 from .models import Author,Book,Users,Category,Order
 
@@ -86,7 +87,7 @@ def order_create(request):
      form = OrderForm(request.POST)
      if form.is_valid():
         order=form.save()
-        return redirect('order_detail', order.id)
+        return redirect('order_detail',order.order_number)
     else:
       form = OrderForm()
 
@@ -94,9 +95,9 @@ def order_create(request):
                 'library/orders/create.html',
                 {'form': form})
 
-def order_update(request,id):
+def order_update(request,order_number):
     try:
-        order = Order.objects.get(id=id)
+        order = Order.objects.get(order_number=order_number)
     except Order.DoesNotExist:
         raise Http404("Order with that id doesn't exist")
     
@@ -104,10 +105,26 @@ def order_update(request,id):
         form = OrderForm(request.POST)
         if form.is_valid():
           order=form.save()
-          return redirect('order_detail', order.id)
+          return redirect('order_detail', order_number)
     else:
       form = OrderForm()
 
     return render(request,
                 'library/orders/update.html',
                 {'form': form})
+
+def order_delete(request,order_number):
+    try:
+       order = Order.objects.get(order_number=order_number)
+    except Order.DoesNotExist:
+        raise Http404("Order with that id doesn't exist") 
+        
+    if request.method == "POST":
+      form = OrderForm(request.POST)
+      if form.is_valid():
+        order.delete()
+    return redirect('order_list')
+    
+    return render(request,
+              'library/orders/delete.html',
+              {'form': form})
