@@ -1,5 +1,5 @@
 from urllib import request
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 # Create your views here.
 # kod umieszczamy w pliku views.py wybranej aplikacji
 
@@ -10,11 +10,30 @@ from .forms import OrderForm
 from .models import Author,Book,Users,Category,Order
 
 def welcome_view(request):
-    now = datetime.datetime.now()
+    num_books = Book.objects.count()
+    num_authors = Author.objects.count()
+    num_orders = Order.objects.count()
+
+    context = {
+        'num_books': num_books,
+        'num_authors': num_authors,
+        'num_orders': num_orders,
+    }
     html = f"""
-        <html><body>
-        home page
-        </body></html>"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Welcome to Our Library!</title>
+    </head>
+    <body>
+        <h1>Welcome to Our Library!</h1>
+
+        <p>Number of Books: {num_books}</p>
+        <p>Number of Authors: {num_authors}</p>
+        <p>Number of Orders: {num_orders}</p>
+    </body>
+    </html>
+    """
     return HttpResponse(html)
 
 def book_list(request):
@@ -42,6 +61,17 @@ def author_detail(request, name):
     return render(request,
                 'library/authors/detail.html', 
                   {'author': author})
+
+def author_books(request, name):
+    author = get_object_or_404(Author, name=name)
+
+    books_by_author = Book.objects.filter(author=author)
+    context = {
+        'author': author,
+        'books': books_by_author,
+    }
+
+    return render(request, 'library/authors/book.html', context)
 
 def user_list(request):
     users = Users.objects.all()
