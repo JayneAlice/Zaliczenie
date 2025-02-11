@@ -1,4 +1,4 @@
-{% extends "library/base.html" %}  {# Ensure correct path #}
+{% extends "library/base.html" %}
 
 {% block title %}Update Order{% endblock %}
 
@@ -10,6 +10,12 @@
 
     <form method="post">
         {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.order_number.id_for_label }}">Order Number:</label>
+            {{ form.order_number }}
+        </div>
+
         <div class="form-group">
             <label for="{{ form.user.id_for_label }}">User:</label>
             {{ form.user }}

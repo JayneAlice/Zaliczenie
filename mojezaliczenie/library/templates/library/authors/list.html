@@ -1,10 +1,13 @@
 {% extends "library/base.html" %}
 
 {% block content %}
-<h2>Our Authors</h2>
-<ul>
-  {% for author in authors %}
-    <p>{{ author.name }}</p>
-  {% endfor %}
-</ul>
+
+  <a href="{% url 'home' %}"><button>Back to home page</button></a>
+
+  <h2>Our Authors</h2>
+  <ul>
+    {% for author in authors %}
+      <li><a href="{% url 'author_detail' name=author.name %}">{{ author.name }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock %}

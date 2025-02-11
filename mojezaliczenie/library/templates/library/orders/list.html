@@ -1,6 +1,8 @@
 {% extends "library/base.html" %}
 
 {% block content %}
+
+  <a href="{% url 'home' %}"><button>Back to home page</button></a>
   <h2>Orders</h2>
 
   {% if orders %}
@@ -10,6 +12,7 @@
           <th>Order Number</th>
           <th>User</th>
           <th>Book</th>
+          <th>View Details</th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +21,9 @@
             <td>{{ order.order_number }}</td>
             <td>{{ order.user }}</td>
             <td>{{ order.book }}</td>
+            <td>
+              <a href="{% url 'order_detail' order_number=order.order_number %}">View</a>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
@@ -25,4 +31,7 @@
   {% else %}
     <p>No orders found.</p>
   {% endif %}
+
+  <a href="{% url 'order_create' %}"><button>Add Order</button></a>
 {% endblock %}
+

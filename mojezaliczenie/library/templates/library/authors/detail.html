@@ -1,6 +1,14 @@
 {% extends "library/base.html" %}
 
 {% block content %}
-<h2>{{ author.name }}</h2>
-<p>Bio: {{ author.bio }}</p>
+
+  <a href="{% url 'author_list' %}">Back to list</a>
+  <br>
+
+  <h2>{{ author.name }}</h2>
+  <p>Bio: {{ author.bio }}</p>
+
+  <a href="{% url 'author_books' title=author.name %}">See Author books</a>
+  <br>
+
 {% endblock %}

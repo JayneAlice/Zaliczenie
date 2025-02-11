@@ -3,10 +3,17 @@
 {% block title %}{{ order.name }}{% endblock %}
 
 {% block content %}
-<a href="{% url 'order_list' %}">Back to list</a>
-<br>
+    <a href="{% url 'order_list' %}">Back to list</a>
+    <br>
 
-<p>{{ order.order_number }}</p>
-<p>{{ order.user }}</p>
-<p>{{ order.book }}</p>
+    <p>Order Number: {{ order.order_number }}</p>
+    <p>User: {{ order.user }}</p>
+    <p>Book: {{ order.book }}</p>
+
+    <a href="{% url 'order_update' order_number=order.order_number %}"><button>Update Order</button></a>
+
+    <form method="post" action="{% url 'order_delete' order_number=order.order_number %}">
+        {% csrf_token %}
+        <button type="submit">Delete Order</button>
+    </form>
 {% endblock %}

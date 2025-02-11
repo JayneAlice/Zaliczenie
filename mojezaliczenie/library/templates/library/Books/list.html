@@ -1,11 +1,13 @@
 {% extends "library/base.html" %}
 
 {% block content %}
+<a href="{% url 'home' %}"><button>Back to home page</button></a>
+
 <h2>Book shelf</h2>
 <ul>
   {% for book in books %}
-    <p>{{ book.title }}</p>
-    <p>By: {{ book.author }}</p>
+    <p><a href="{% url 'book_detail' title=book.title %}">{{ book.title }}</a></p>
+    <p>By:{{ book.author }}</p>
     <p>Category: {{ book.category }}</p>
     <p>Published Date: {{ book.published_date }}</p>
   {% endfor %}

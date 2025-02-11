@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404, render,redirect
 # kod umieszczamy w pliku views.py wybranej aplikacji
 
 from django.http import HttpResponse,Http404
-import datetime
+
+from django.urls import reverse
 
 from .forms import OrderForm
 from .models import Author,Book,Users,Category,Order
@@ -19,6 +20,7 @@ def welcome_view(request):
         'num_authors': num_authors,
         'num_orders': num_orders,
     }
+
     html = f"""
     <!DOCTYPE html>
     <html>
@@ -28,9 +30,11 @@ def welcome_view(request):
     <body>
         <h1>Welcome to Our Library!</h1>
 
-        <p>Number of Books: {num_books}</p>
-        <p>Number of Authors: {num_authors}</p>
-        <p>Number of Orders: {num_orders}</p>
+        <p>Number of Books: {num_books} (<a href="{reverse('book_list')}">View Books</a>)</p>
+        <p>Number of Authors: {num_authors} (<a href="{reverse('author_list')}">View Authors</a>)</p>
+        <p>Number of Orders: {num_orders} (<a href="{reverse('order_list')}">View Orders</a>)</p>
+        <p><a href="{reverse('category_list')}">View Categories</a></p>
+        <p><a href="{reverse('user_list')}">View Users</a></p>
     </body>
     </html>
     """
@@ -58,7 +62,7 @@ def author_list(request):
 def author_detail(request, name):
     author = Author.objects.get(name=name)
 
-    return render(request,
+    return render(request, 
                 'library/authors/detail.html', 
                   {'author': author})
 
@@ -71,19 +75,21 @@ def author_books(request, name):
         'books': books_by_author,
     }
 
-    return render(request, 'library/authors/book.html', context)
+    return render(request, 
+                  'library/authors/book.html', 
+                  context)
 
 def user_list(request):
     users = Users.objects.all()
-    return render(request,
-                'library/users/list.html', 
+    return render(request, 
+                  'library/users/list.html', 
                   {'users': users})
 
-def user_detail(request, name):
-    user = Users.objects.get(name=name)
 
-    return render(request,
-                'library/users/detail.html', 
+def user_detail(request, username):
+    user = get_object_or_404(Users, username=username)
+    return render(request, 
+                  'library/users/detail.html', 
                   {'user': user})
 
 def category_list(request):
@@ -125,36 +131,32 @@ def order_create(request):
                 'library/orders/create.html',
                 {'form': form})
 
-def order_update(request,order_number):
-    try:
-        order = Order.objects.get(order_number=order_number)
-    except Order.DoesNotExist:
-        raise Http404("Order with that id doesn't exist")
-    
-    if request.method == "POST":
-        form = OrderForm(request.POST)
+def order_update(request, order_number):
+    order = get_object_or_404(Order, order_number=order_number)
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
         if form.is_valid():
-          order=form.save()
-          return redirect('order_detail', order_number)
+            print("Form is valid!")
+            form.save()
+            return redirect('order_detail', order_number=order.order_number)
+        else:
+            print("Form is NOT valid!")
+            print(form.errors) 
     else:
-      form = OrderForm()
+        form = OrderForm(instance=order)
+    return render(request, 'library/orders/update.html', {'form': form, 'order': order})
 
     return render(request,
                 'library/orders/update.html',
                 {'form': form})
 
-def order_delete(request,order_number):
-    try:
-       order = Order.objects.get(order_number=order_number)
-    except Order.DoesNotExist:
-        raise Http404("Order with that id doesn't exist") 
-        
+def order_delete(request, order_number):
+    order = get_object_or_404(Order, order_number=order_number)
+
     if request.method == "POST":
-      form = OrderForm(request.POST)
-      if form.is_valid():
         order.delete()
-    return redirect('order_list')
-    
-    return render(request,
-              'library/orders/delete.html',
-              {'form': form})
+        return redirect('order_list')
+    else:
+        return render(request, 
+                      'library/orders/delete.html', 
+                      {'order': order})
